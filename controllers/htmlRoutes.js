@@ -4,7 +4,20 @@ module.exports = function(app) {
     app.get("/", function(req, res) {
       res.render("index");
     });
-  
+    
+    //Display articles on load
+    app.get("/articles", (req, res) => {
+        db.Article.find({ saved: false })
+        .sort({ createdAt: -1 })
+        .then(dbArticles => {
+            res.json(dbArticles);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+    });
+    
+    // saved page
     app.get("/saved", function(req, res) {
       res.render("saved");
     });
